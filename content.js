@@ -51,11 +51,9 @@ let originalNodes = [];
  * If the action is "replaceWords", it replaces words with emojis in all text nodes of the document.
  * If the action is "undoReplace", it restores the original text of all modified text nodes.
  * @param {Object} request - The message sent by the popup script.
- * @param {Object} sender - An object containing information about the script that sent the message.
- * @param {function} sendResponse - A function to call to send a response.
  * @returns {void}
  */
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request) => {
     if (request.action === "replaceWords") {
         const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
         let node;

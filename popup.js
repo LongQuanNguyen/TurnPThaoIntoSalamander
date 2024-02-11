@@ -13,6 +13,8 @@ let replaced = false;
 document.getElementById('replaceButton').addEventListener('click', () => {
     replaced = !replaced;
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        chrome.tabs.sendMessage(tabs[0].id, {action: replaced ? 'undoReplace' : 'replaceWords'});
+        if (tabs[0]) {
+            chrome.tabs.sendMessage(tabs[0].id, {action: replaced ? 'replaceWords' : 'undoReplace'});
+        }
     });
 });
