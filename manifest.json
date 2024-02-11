@@ -1,17 +1,17 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Biến Phương Thảo thành kì nhông",
     "version": "1.0",
-    "description": "Replacing PTheo name aliases into lizzard emoji",
-    "permissions": ["activeTab"],
-    "browser_action": {
+    "description": "Replacing PTheo name aliases into lizard emoji",
+    "permissions": ["activeTab", "scripting"],
+    "action": {
         "default_popup": "popup.html"
     },
     "content_scripts": [
-      {
-        "matches": ["<all_urls>"],
-        "js": ["content.js"]
-      }
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"]
+        }
     ],
     "icons": {
         "16": "./lizard.png",

@@ -32,13 +32,28 @@ function replaceWordsWithEmojis() {
     }
 }
 
-// Array to store the original text nodes and their text before replacement
+/**
+ * Restores the original text of all text nodes that have been modified by the `replaceWordsWithEmojis` function.
+ */
+function undoReplace() {
+    for (const {node, originalText} of originalNodes) {
+        node.nodeValue = originalText;
+    }
+}
+
+/**
+ * Saving original state of all text nodes that have been modified.
+ */
 let originalNodes = [];
 
 /**
- * Listens for messages from the popup script.
- * If the action in the message is "replaceWords", it stores the original text of all text nodes and then replaces words with emojis.
- * If the action in the message is "undoReplace", it restores the original text of all text nodes.
+ * Listens for messages from the popup script and calls the appropriate function based on the action in the message.
+ * If the action is "replaceWords", it replaces words with emojis in all text nodes of the document.
+ * If the action is "undoReplace", it restores the original text of all modified text nodes.
+ * @param {Object} request - The message sent by the popup script.
+ * @param {Object} sender - An object containing information about the script that sent the message.
+ * @param {function} sendResponse - A function to call to send a response.
+ * @returns {void}
  */
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "replaceWords") {
@@ -50,8 +65,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
         replaceWordsWithEmojis();
     } else if (request.action === "undoReplace") {
-        for (const {node, originalText} of originalNodes) {
-            node.nodeValue = originalText;
-        }
+        undoReplace();
     }
 });
