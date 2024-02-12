@@ -59,7 +59,6 @@ function saveOriginalNodes(nodesArray) {
 /**
  * Restores the original text of all text nodes that have been modified by the `replaceWordsWithEmojis` function.
  * @param {Array} nodesArray - The array of original text nodes.
- * @param {Array} nodesArray - The array of original text nodes.
  */
 function undoReplace(nodesArray) {
     for (const {node, originalText} of nodesArray) {
