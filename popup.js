@@ -1,7 +1,3 @@
-/**
- * Flag to track whether the words have been replaced with emojis.
- * @type {boolean}
- */
 let replaced = false;
 
 /**

@@ -33,36 +33,39 @@ function replaceWordsWithEmojis() {
 }
 
 /**
- * Restores the original text of all text nodes that have been modified by the `replaceWordsWithEmojis` function.
+ * Save the original state of all text nodes in the document.
+ * @param {Array} nodesArray - The array to store the original nodes.
  */
-function undoReplace() {
-    for (const {node, originalText} of originalNodes) {
-        node.nodeValue = originalText;
+function saveOriginalNodes(nodesArray) {
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while(node = walk.nextNode()) {
+        nodesArray.push({node: node, originalText: node.nodeValue});
     }
 }
 
 /**
- * Saving original state of all text nodes that have been modified.
+ * Restores the original text of all text nodes that have been modified by the `replaceWordsWithEmojis` function.
+ * @param {Array} nodesArray - The array of original text nodes.
  */
-let originalNodes = [];
+function undoReplace(nodesArray) {
+    for (const {node, originalText} of nodesArray) {
+        node.nodeValue = originalText;
+    }
+}
 
-/**
- * Listens for messages from the popup script and calls the appropriate function based on the action in the message.
- * If the action is "replaceWords", it replaces words with emojis in all text nodes of the document.
- * If the action is "undoReplace", it restores the original text of all modified text nodes.
- * @param {Object} request - The message sent by the popup script.
- * @returns {void}
- */
+
+// EXECUTE
+
+
+let originalNodes = [];
+saveOriginalNodes(originalNodes);
+
+//Listens for messages from the popup script and calls the appropriate function based on the action in the message.
 chrome.runtime.onMessage.addListener((request) => {
     if (request.action === "replaceWords") {
-        const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-        let node;
-        originalNodes = [];
-        while(node = walk.nextNode()) {
-            originalNodes.push({node: node, originalText: node.nodeValue});
-        }
         replaceWordsWithEmojis();
     } else if (request.action === "undoReplace") {
-        undoReplace();
+        undoReplace(originalNodes);
     }
 });
