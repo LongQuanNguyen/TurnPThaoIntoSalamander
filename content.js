@@ -45,7 +45,20 @@ function saveOriginalNodes(nodesArray) {
 }
 
 /**
+ * Save the original state of all text nodes in the document.
+ * @param {Array} nodesArray - The array to store the original nodes.
+ */
+function saveOriginalNodes(nodesArray) {
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    let node;
+    while(node = walk.nextNode()) {
+        nodesArray.push({node: node, originalText: node.nodeValue});
+    }
+}
+
+/**
  * Restores the original text of all text nodes that have been modified by the `replaceWordsWithEmojis` function.
+ * @param {Array} nodesArray - The array of original text nodes.
  * @param {Array} nodesArray - The array of original text nodes.
  */
 function undoReplace(nodesArray) {
