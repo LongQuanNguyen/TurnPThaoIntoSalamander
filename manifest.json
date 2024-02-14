@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Biến Phương Thảo thành kì nhông",
-    "version": "1.1",
+    "version": "1.1.1",
     "description": "Replacing PTheo name aliases into lizard emoji",
     "permissions": ["activeTab"],
     "action": {
